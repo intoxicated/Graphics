@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef __CS_ASSN1__Vector__
-#define __CS_ASSN1__Vector__
+#ifndef __GR__Vector__
+#define __GR__Vector__
 
 #include <cmath>
 #include <initializer_list>
@@ -294,4 +294,4 @@ bool   operator!=(const Vector& a, const Vector& b);
 Vector trans(const Vector& a);
 
 
-#endif /* defined(__CS_ASSN1__Vector__) */
+#endif 
