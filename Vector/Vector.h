@@ -8,7 +8,6 @@
  *
  * Date: Jan 13th, 2014
  *
- * This work complies with the JMU Honor Code.
  */
 
 #ifndef __CS_ASSN1__Vector__
