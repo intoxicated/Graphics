@@ -20,10 +20,10 @@
 #define DESC(func, desc) cout << "[ TEST     ] " << func << endl << "[ DESC     ] " << desc << endl
 
 TEST(VectorOneConstructorTest, PassValidInput) {
-    DESC("Vector(int size)", "Pass valid size to constructor");
+	DESC("Vector(int size)", "Pass valid size to constructor");
     
 	EXPECT_NO_THROW(Vector v(1));
-    EXPECT_NO_THROW(Vector v(100));
+	EXPECT_NO_THROW(Vector v(100));
 
 	Vector v3(10);
 	
@@ -32,63 +32,63 @@ TEST(VectorOneConstructorTest, PassValidInput) {
 }
  
 TEST(VectorOneConstructorTest, PassInvalidInput) {
-    DESC("Vector(int size)", "Pass invalid size to constructor, should throw exception");
-    EXPECT_THROW(Vector v(-1),  std::invalid_argument);
-    ASSERT_THROW(Vector v(-120),  std::invalid_argument);
+	DESC("Vector(int size)", "Pass invalid size to constructor, should throw exception");
+	EXPECT_THROW(Vector v(-1),  std::invalid_argument);
+	ASSERT_THROW(Vector v(-120),  std::invalid_argument);
 }
 
 TEST(VectorTwoConstrutorTest, PassValidInput) {
-    DESC("Vector(int size, char orientation)", "Pass valid size and orientation to constructor");
-    EXPECT_NO_THROW(Vector v(1, Vector::ROW));
-    EXPECT_NO_THROW(Vector v(5, Vector::COLUMN));
+	DESC("Vector(int size, char orientation)", "Pass valid size and orientation to constructor");
+	EXPECT_NO_THROW(Vector v(1, Vector::ROW));
+	EXPECT_NO_THROW(Vector v(5, Vector::COLUMN));
 }
 
 TEST(VectorTwoConstrutorTest, PassInvalidSize) {
-    DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
-    EXPECT_THROW(Vector v(-1, Vector::ROW),  std::invalid_argument);
-    ASSERT_THROW(Vector v(-120, Vector::COLUMN),  std::invalid_argument);
+	DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
+	EXPECT_THROW(Vector v(-1, Vector::ROW),  std::invalid_argument);
+	ASSERT_THROW(Vector v(-120, Vector::COLUMN),  std::invalid_argument);
 }
 
 TEST(VectorTwoConstrutorTest, PassInvalidOrientation) {
-    DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
-    EXPECT_THROW(Vector v(4, -1),  std::invalid_argument);
-    ASSERT_THROW(Vector v(20, 5),  std::invalid_argument);
+	DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
+	EXPECT_THROW(Vector v(4, -1),  std::invalid_argument);
+ 	ASSERT_THROW(Vector v(20, 5),  std::invalid_argument);
 }
 
 TEST(VectorCopyConstructorTest, ValidCopy) {
-    DESC("Vector(const Vector& original)", "Perform valid copy and compare size");
-    Vector v(2);
+	DESC("Vector(const Vector& original)", "Perform valid copy and compare size");
+	Vector v(2);
 	v = { 1, 2 };
-    Vector v1 = v;
+	Vector v1 = v;
 
-    EXPECT_TRUE(v.getSize() == v1.getSize());
+	EXPECT_TRUE(v.getSize() == v1.getSize());
 	EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
 }
 
 TEST(VectorCopyConstructorTest, ValidCopy2) {
-    DESC("Vector(const Vector& original)", "Perform valid copy and compare contents");
-    Vector v(5, Vector::ROW);
-    v = {4.0,7.0,12.1,9.8,1.4};
+	DESC("Vector(const Vector& original)", "Perform valid copy and compare contents");
+	Vector v(5, Vector::ROW);
+	v = {4.0,7.0,12.1,9.8,1.4};
 
-    Vector v1 = v;
+	Vector v1 = v;
     
-    EXPECT_TRUE(v.getSize() == v1.getSize());
-    EXPECT_TRUE(v.getOrientation() == v1.getOrientation());
-    EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
+	EXPECT_TRUE(v.getSize() == v1.getSize());
+	EXPECT_TRUE(v.getOrientation() == v1.getOrientation());
+	EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
 }
 
 TEST(VectorGet, ValidGet) {
-    DESC("double get(int i) const", "Verify get function returns right values");
+	DESC("double get(int i) const", "Verify get function returns right values");
     Vector v(5);
-    v = { 6.0, 3.0, 10.3, 94.1, 9.2 };
-    double expected[] = { 6.0, 3.0, 10.3, 94.1, 9.2 };
+	v = { 6.0, 3.0, 10.3, 94.1, 9.2 };
+	double expected[] = { 6.0, 3.0, 10.3, 94.1, 9.2 };
     
-    for(int i = 0; i < 5; ++i)
-    {
-        //std::cout << " Expect: " << expect[i] << endl;
-        //std::cout << " Actual: " << v.get(i) << endl;
-        EXPECT_TRUE(v.get(i) == expected[i]);
-    }
+	for(int i = 0; i < 5; ++i)
+	{
+		//std::cout << " Expect: " << expect[i] << endl;
+		//std::cout << " Actual: " << v.get(i) << endl;
+		EXPECT_TRUE(v.get(i) == expected[i]);
+	}
 }
 
 TEST(VectorGet, ValidGet2) {
