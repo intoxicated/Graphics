@@ -19,75 +19,76 @@
 #define DESC(func, desc) cout << "[ TEST     ] " << func << endl << "[ DESC     ] " << desc << endl
 
 TEST(VectorOneConstructorTest, PassValidInput) {
-	DESC("Vector(int size)", "Pass valid size to constructor");
+    DESC("Vector(int size)", "Pass valid size to constructor");
     
-	EXPECT_NO_THROW(Vector v(1));
-	EXPECT_NO_THROW(Vector v(100));
+    EXPECT_NO_THROW(Vector v(1));
+    EXPECT_NO_THROW(Vector v(100));
 
-	Vector v3(10);
+    Vector v3(10);
 	
-	EXPECT_EQ(v3.getSize(), 10);
-	EXPECT_TRUE(v3.getOrientation() == Vector::ROW);
+    EXPECT_EQ(v3.getSize(), 10);
+    EXPECT_TRUE(v3.getOrientation() == Vector::ROW);
 }
  
 TEST(VectorOneConstructorTest, PassInvalidInput) {
-	DESC("Vector(int size)", "Pass invalid size to constructor, should throw exception");
-	EXPECT_THROW(Vector v(-1),  std::invalid_argument);
-	ASSERT_THROW(Vector v(-120),  std::invalid_argument);
+    DESC("Vector(int size)", "Pass invalid size to constructor, should throw exception");
+    EXPECT_THROW(Vector v(-1),  std::invalid_argument);
+    ASSERT_THROW(Vector v(-120),  std::invalid_argument);
 }
 
 TEST(VectorTwoConstrutorTest, PassValidInput) {
-	DESC("Vector(int size, char orientation)", "Pass valid size and orientation to constructor");
-	EXPECT_NO_THROW(Vector v(1, Vector::ROW));
-	EXPECT_NO_THROW(Vector v(5, Vector::COLUMN));
+    DESC("Vector(int size, char orientation)", "Pass valid size and orientation to constructor");
+    EXPECT_NO_THROW(Vector v(1, Vector::ROW));
+    EXPECT_NO_THROW(Vector v(5, Vector::COLUMN));
 }
 
 TEST(VectorTwoConstrutorTest, PassInvalidSize) {
-	DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
-	EXPECT_THROW(Vector v(-1, Vector::ROW),  std::invalid_argument);
-	ASSERT_THROW(Vector v(-120, Vector::COLUMN),  std::invalid_argument);
+    DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
+    EXPECT_THROW(Vector v(-1, Vector::ROW),  std::invalid_argument);
+    ASSERT_THROW(Vector v(-120, Vector::COLUMN),  std::invalid_argument);
 }
 
 TEST(VectorTwoConstrutorTest, PassInvalidOrientation) {
-	DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
-	EXPECT_THROW(Vector v(4, -1),  std::invalid_argument);
- 	ASSERT_THROW(Vector v(20, 5),  std::invalid_argument);
+    DESC("Vector(int size, char orientation)", "Pass invalid size to constructor, should throw exception");
+    EXPECT_THROW(Vector v(4, -1),  std::invalid_argument);
+    ASSERT_THROW(Vector v(20, 5),  std::invalid_argument);
 }
 
 TEST(VectorCopyConstructorTest, ValidCopy) {
-	DESC("Vector(const Vector& original)", "Perform valid copy and compare size");
-	Vector v(2);
-	v = { 1, 2 };
-	Vector v1 = v;
+    DESC("Vector(const Vector& original)", "Perform valid copy and compare size");
+    
+    Vector v(2);
+    v = { 1, 2 };
+    Vector v1 = v;
 
-	EXPECT_TRUE(v.getSize() == v1.getSize());
-	EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
+    EXPECT_TRUE(v.getSize() == v1.getSize());
+    EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
 }
 
 TEST(VectorCopyConstructorTest, ValidCopy2) {
-	DESC("Vector(const Vector& original)", "Perform valid copy and compare contents");
-	Vector v(5, Vector::ROW);
-	v = {4.0,7.0,12.1,9.8,1.4};
+    DESC("Vector(const Vector& original)", "Perform valid copy and compare contents");
+    Vector v(5, Vector::ROW);
+    v = {4.0,7.0,12.1,9.8,1.4};
 
-	Vector v1 = v;
+    Vector v1 = v;
     
-	EXPECT_TRUE(v.getSize() == v1.getSize());
-	EXPECT_TRUE(v.getOrientation() == v1.getOrientation());
-	EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
+    EXPECT_TRUE(v.getSize() == v1.getSize());
+    EXPECT_TRUE(v.getOrientation() == v1.getOrientation());
+    EXPECT_TRUE(arrayMatch(v.get_content(), v1.get_content(), v.getSize()));
 }
 
 TEST(VectorGet, ValidGet) {
-	DESC("double get(int i) const", "Verify get function returns right values");
+    DESC("double get(int i) const", "Verify get function returns right values");
     Vector v(5);
-	v = { 6.0, 3.0, 10.3, 94.1, 9.2 };
-	double expected[] = { 6.0, 3.0, 10.3, 94.1, 9.2 };
+    v = { 6.0, 3.0, 10.3, 94.1, 9.2 };
+    double expected[] = { 6.0, 3.0, 10.3, 94.1, 9.2 };
     
-	for(int i = 0; i < 5; ++i)
-	{
-		//std::cout << " Expect: " << expect[i] << endl;
-		//std::cout << " Actual: " << v.get(i) << endl;
-		EXPECT_TRUE(v.get(i) == expected[i]);
-	}
+    for(int i = 0; i < 5; ++i)
+    {
+        //std::cout << " Expect: " << expect[i] << endl;
+        //std::cout << " Actual: " << v.get(i) << endl;
+        EXPECT_TRUE(v.get(i) == expected[i]);
+    }
 }
 
 TEST(VectorGet, ValidGet2) {
@@ -121,7 +122,7 @@ TEST(VectorGet, OutofRangeGet) {
 
 TEST(VectorOrientation, DefaultOrientation) {
     DESC("char getOrientation() const", "Default Constructor with size should return default orientation (ROW)");
-	Vector v(5);
+    Vector v(5);
     EXPECT_TRUE(v.getOrientation() == Vector::ROW);
 }
 
@@ -144,72 +145,72 @@ TEST(VectorOrientation, CopyAndValidate) {
 }
 
 TEST(VectorGetSize, ValidSize) {
-    DESC("int getSize() const", "getSize should return correct size of vector");
-    Vector v(3);
-    EXPECT_TRUE(v.getSize() == 3);
+	DESC("int getSize() const", "getSize should return correct size of vector");
+	Vector v(3);
+	EXPECT_TRUE(v.getSize() == 3);
 }
 
 TEST(VectorGetSize, EmptySize) {
-    DESC("int getSize() const", "getSize should return 0 size of vector");
-    Vector v(0);
-    EXPECT_TRUE(v.getSize() == 0);
+	DESC("int getSize() const", "getSize should return 0 size of vector");
+	Vector v(0);
+	EXPECT_TRUE(v.getSize() == 0);
 }
 
 TEST(VectorGetSize, CopyAndValidate) {
-    DESC("int getSize() const", "getSize should return same size as a vector that it was copied");
-    Vector v(5);
-    Vector v1 = v;
-    EXPECT_TRUE(v.getSize() == 5);
-    EXPECT_TRUE(v.getSize() == v1.getSize());
+	DESC("int getSize() const", "getSize should return same size as a vector that it was copied");
+	Vector v(5);
+	Vector v1 = v;
+	EXPECT_TRUE(v.getSize() == 5);
+	EXPECT_TRUE(v.getSize() == v1.getSize());
 }
 
 TEST (VectorNorm, validNorm) {
-    DESC("friend double norm(const Vector& a)", "norm should return correct value of norm from vector");
-    Vector v(5, Vector::ROW);
-    v = {4, 1, 6, 9, 3};
+	DESC("friend double norm(const Vector& a)", "norm should return correct value of norm from vector");
+	Vector v(5, Vector::ROW);
+	v = {4, 1, 6, 9, 3};
     
-    double ret = norm(v);
+	double ret = norm(v);
     
-    //calculate norm
-    //sqrt(4^2 + 1^2 + 6^2 + 9^2 + 3^2)
-    double expect = sqrt(pow(4, 2) + pow(1,2) + pow(6, 2) + pow(9,2) + pow(3, 2));
+	//calculate norm
+	//sqrt(4^2 + 1^2 + 6^2 + 9^2 + 3^2)
+	double expect = sqrt(pow(4, 2) + pow(1,2) + pow(6, 2) + pow(9,2) + pow(3, 2));
     
-    EXPECT_TRUE(ret == expect);
+	EXPECT_TRUE(ret == expect);
 }
 
 TEST (VectorNorm, validNorm2) {
-    DESC("friend double norm(const Vector& a)", "norm should return correct value of norm from vector");
-    Vector v(5, Vector::ROW);
-    v = {-4, 1, -6, 9, 3};
+	DESC("friend double norm(const Vector& a)", "norm should return correct value of norm from vector");
+	Vector v(5, Vector::ROW);	
+	v = {-4, 1, -6, 9, 3};
     
-    double ret = norm(v);
+	double ret = norm(v);
     
-    //calculate norm
-    //sqrt(4^2 + 1^2 + 6^2 + 9^2 + 3^2)
-    double expect = sqrt(pow(-4, 2) + pow(1,2) + pow(-6, 2) + pow(9,2) + pow(3, 2));
+	//calculate norm
+	//sqrt(4^2 + 1^2 + 6^2 + 9^2 + 3^2)
+	double expect = sqrt(pow(-4, 2) + pow(1,2) + pow(-6, 2) + pow(9,2) + pow(3, 2));
     
-    EXPECT_TRUE(ret == expect);
+	EXPECT_TRUE(ret == expect);
 }
 
 TEST (VectorNorm, ValidNorm3) {
-    DESC("friend double norm(const Vector& a)", "norm should return correct value of norm from vector");
-    Vector v(5, Vector::ROW);
-    v = {23.1, 1.5, 8.2, 4.8, 3.9};
+	DESC("friend double norm(const Vector& a)", "norm should return correct value of norm from vector");
+	Vector v(5, Vector::ROW);
+	v = {23.1, 1.5, 8.2, 4.8, 3.9};
     
-    Vector v1(5, Vector::ROW);
-    v1 = {-4, 1, -6, 9, 3};
+	Vector v1(5, Vector::ROW);
+	v1 = {-4, 1, -6, 9, 3};
     
-    Vector v3 = v + v1;
-    double ret = norm(v3);
+	Vector v3 = v + v1;
+	double ret = norm(v3);
 
-    //calculate norm
-    double expect = sqrt(pow(19.1, 2) + pow(2.5,2) + pow(2.2, 2) + pow(13.8,2) + pow(6.9, 2));
+	//calculate norm
+	double expect = sqrt(pow(19.1, 2) + pow(2.5,2) + pow(2.2, 2) + pow(13.8,2) + pow(6.9, 2));
     
-    EXPECT_TRUE(ret == expect);
+	EXPECT_TRUE(ret == expect);
 }
 
 TEST (VectorNormalized, ValidNormalized) {
-    DESC("friend Vector normalized(const Vector& a)", "normalized should return correct vector with valid inputs");
+	DESC("friend Vector normalized(const Vector& a)", "normalized should return correct vector with valid inputs");
 	
 	Vector v(3);
 	v = { 1, 2, 3 };
@@ -223,7 +224,7 @@ TEST (VectorNormalized, ValidNormalized) {
 }
 
 TEST (VectorNormalized, ValidNormalized2) {
-    DESC("friend Vector normalized(const Vector& a)", "normalized should return correct vector with valid inputs");
+	DESC("friend Vector normalized(const Vector& a)", "normalized should return correct vector with valid inputs");
 	
 	Vector v(3);
 	v = { 1.4, 8.5, 3.86 };
@@ -237,7 +238,7 @@ TEST (VectorNormalized, ValidNormalized2) {
 }
 
 TEST (VectorNormalized, ValidNormalized3) {
-    DESC("friend Vector normalized(const Vector& a)", "normalized should return correct vector with valid inputs");
+	DESC("friend Vector normalized(const Vector& a)", "normalized should return correct vector with valid inputs");
 	
 	Vector v(3);
 	v = { 1, 2, 3 };
@@ -254,9 +255,8 @@ TEST (VectorNormalized, ValidNormalized3) {
 	EXPECT_TRUE(arrayMatch(expected, v1.get_content()));
 }
 
-
 TEST (VectorAccessOperator, ValidOperator) {
-    DESC("double& operator()(int i)", "operator() to access values in vector");
+	DESC("double& operator()(int i)", "operator() to access values in vector");
 	
 	Vector v(3);
 	v = { 1, 2, 3 };
@@ -267,7 +267,7 @@ TEST (VectorAccessOperator, ValidOperator) {
 }
 
 TEST (VectorAccessOperator, ValidOperator2) {
-    DESC("double& operator()(int i)", "operator() to access and modifiy values in vector");
+	DESC("double& operator()(int i)", "operator() to access and modifiy values in vector");
 	
 	Vector v(3);
 	v = { 1, 2, 3 };
@@ -280,7 +280,7 @@ TEST (VectorAccessOperator, ValidOperator2) {
 }
 
 TEST (VectorAccessOperator, InvalidOperator) {
-    DESC("double& operator()(int i)", "operator() to access invalid index, should throw exception");
+	DESC("double& operator()(int i)", "operator() to access invalid index, should throw exception");
 	
 	Vector v(3);
 	v = { 1, 2, 3 };
@@ -290,33 +290,33 @@ TEST (VectorAccessOperator, InvalidOperator) {
 }
 
 TEST(VectorInitListOperator, ValidOperator) {
-    DESC("Vector& operator=(std::initializer_list<double> values)", "Set initializer_list to vector and compare");
-    Vector v(3);
-    v = { 1,2,3 };
-    double expected[] = {1,2,3};
-    EXPECT_TRUE(arrayMatch(expected, v.get_content()));
+	DESC("Vector& operator=(std::initializer_list<double> values)", "Set initializer_list to vector and compare");
+	Vector v(3);
+	v = { 1,2,3 };
+	double expected[] = {1,2,3};
+	EXPECT_TRUE(arrayMatch(expected, v.get_content()));
 }
 
 TEST(VectorInitListOperator, ValidOperator2) {
-    DESC("Vector& operator=(std::initializer_list<double> values)", "Set initializer_list to vector and compare");
-    Vector v(5);
-    v = { 1,2,3,4,5 };
-    double expected[] = {1,2,3,4,5};
-    EXPECT_TRUE(v.getSize() != 3);
-    EXPECT_TRUE(v.getSize() == 5);
-    EXPECT_TRUE(arrayMatch(expected, v.get_content()));
+	DESC("Vector& operator=(std::initializer_list<double> values)", "Set initializer_list to vector and compare");
+	Vector v(5);
+	v = { 1,2,3,4,5 };
+	double expected[] = {1,2,3,4,5};
+	EXPECT_TRUE(v.getSize() != 3);
+	EXPECT_TRUE(v.getSize() == 5);
+	EXPECT_TRUE(arrayMatch(expected, v.get_content()));
 }
 
 TEST(VectorInitListOperator, InvalidOperator) {
-    DESC("Vector& operator=(std::initializer_list<double> values)", "Set empty list to vector, which should be fine");
-    Vector v(0);
+	DESC("Vector& operator=(std::initializer_list<double> values)", "Set empty list to vector, which should be fine");
+	Vector v(0);
    	
 	EXPECT_THROW((v = {1,2,3}), std::length_error);
-    EXPECT_TRUE(v.getSize() == 0);
+	EXPECT_TRUE(v.getSize() == 0);
 }
 
 TEST(VectorAssignVectorOperator, ValidOperator) {
-    DESC("Vector& operator=(const Vector& other)", "Testing valid assignment operator");
+	DESC("Vector& operator=(const Vector& other)", "Testing valid assignment operator");
 	Vector v(3);
 	v = { 1, 2, 3 };
 	Vector v1(3), v2(3);
@@ -329,7 +329,7 @@ TEST(VectorAssignVectorOperator, ValidOperator) {
 }
 
 TEST(VectorAssignVectorOperator, ValidOperator2) {
-    DESC("Vector& operator=(const Vector& other)", "Testing valid assignment operator after changing values");
+	DESC("Vector& operator=(const Vector& other)", "Testing valid assignment operator after changing values");
 
 	Vector v(5, Vector::COLUMN);
 	v = { 1, 2, 3, 4, 5 };
@@ -345,7 +345,7 @@ TEST(VectorAssignVectorOperator, ValidOperator2) {
 }
 
 TEST(VectorAssignVectorOperator, InvalidOperator) {
-    DESC("Vector& operator=(const Vector& other)", "Invalid assignment operator when either length or orientation is different, should throw exception");
+	DESC("Vector& operator=(const Vector& other)", "Invalid assignment operator when either length or orientation is different, should throw exception");
 
 	Vector v(4, Vector::COLUMN);
 	Vector v1(4, Vector::ROW);
@@ -360,7 +360,7 @@ TEST(VectorAssignVectorOperator, InvalidOperator) {
 }
 
 TEST(VectorPlusOperator, ValidOperator) {
-    DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding two vectors should be valid");
+	DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding two vectors should be valid");
 
 	Vector v(3, Vector::COLUMN);
 	v = { 2,3,4 };
@@ -372,12 +372,11 @@ TEST(VectorPlusOperator, ValidOperator) {
 
 	double expected[] = {7,9,11};
 	EXPECT_NO_THROW(result = v + v1);
-	EXPECT_TRUE(arrayMatch(expected, result.get_content()));
-	
+	EXPECT_TRUE(arrayMatch(expected, result.get_content()));	
 }
 
 TEST(VectorPlusOperator, ValidOperator2) {
-    DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding multiple vectors should be valid");
+	DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding multiple vectors should be valid");
 
 	Vector v(3), v1(3), v2(3), result(3);
 
@@ -394,7 +393,7 @@ TEST(VectorPlusOperator, ValidOperator2) {
 }
 
 TEST(VectorPlusOperator, InvalidOperator) {
-    DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding different size of vector should throw exception");
+	DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding different size of vector should throw exception");
 	Vector v(3);
 	v = { 1, 2, 3 };
 
@@ -407,7 +406,7 @@ TEST(VectorPlusOperator, InvalidOperator) {
 }
 
 TEST(VectorMinusOperator, ValidOperator) {
-    DESC("friend Vector operator-(const Vector& a, const Vector& b)", "Subtract two vectors should be valid");
+	DESC("friend Vector operator-(const Vector& a, const Vector& b)", "Subtract two vectors should be valid");
 	Vector v(3), v1(3), result(3);
 
 	v = { 1, 2, 3 };
@@ -420,7 +419,7 @@ TEST(VectorMinusOperator, ValidOperator) {
 }
 
 TEST(VectorMinusOperator, ValidOperator2) {
-    DESC("friend Vector operator-(const Vector& a, const Vector& b)", "Subtract multiple vectors should be valid");
+	DESC("friend Vector operator-(const Vector& a, const Vector& b)", "Subtract multiple vectors should be valid");
 	
 	Vector v(3), v1(3), v2(3), result(3);
 
@@ -435,7 +434,7 @@ TEST(VectorMinusOperator, ValidOperator2) {
 }
 
 TEST(VectorMinusOperator, InvalidOperator) {
-    DESC("friend Vector operator-(const Vector& a, const Vector& b)", "Subtract different size of vector should throw exception");
+	DESC("friend Vector operator-(const Vector& a, const Vector& b)", "Subtract different size of vector should throw exception");
 	
 	Vector v(3), v1(3), v2(4), result(4), result2(3);
 
@@ -449,7 +448,7 @@ TEST(VectorMinusOperator, InvalidOperator) {
 }
 
 TEST(VectorMultiplyOperator, ValidOperator) {
-    DESC("friend double operator*(const Vector& a, const Vector& b)", "Basic multiplication of two vectors should be valid");
+	DESC("friend double operator*(const Vector& a, const Vector& b)", "Basic multiplication of two vectors should be valid");
 	Vector v(4), v1(4);
 
 	v = { 1, 2, 3, 4};
@@ -462,7 +461,7 @@ TEST(VectorMultiplyOperator, ValidOperator) {
 }
 
 TEST(VectorMultiplyOperator, ValidOperator2) {
-    DESC("friend double operator*(const Vector& a, const Vector& b)", "Multiplying two vectors with double values should return valid result");
+	DESC("friend double operator*(const Vector& a, const Vector& b)", "Multiplying two vectors with double values should return valid result");
 
 	Vector v(4), v1(4);
 
@@ -476,7 +475,7 @@ TEST(VectorMultiplyOperator, ValidOperator2) {
 }
 
 TEST(VectorMultiplyOperator, InvalidOperator) {
-    DESC("friend double operator*(const Vector& a, const Vector& b)", "Multplying two different size of vector should throw exception");
+	DESC("friend double operator*(const Vector& a, const Vector& b)", "Multplying two different size of vector should throw exception");
 	
 	Vector v(4), v1(3);
 
@@ -487,7 +486,7 @@ TEST(VectorMultiplyOperator, InvalidOperator) {
 }
 
 TEST(VectorScalarOperator, ValidOperator) {
-    DESC("friend Vector operator*(double k, const Vector& a)\n\t\
+	DESC("friend Vector operator*(double k, const Vector& a)\n\t\
          friend Vector operator*(const Vector& a, double k)", "multiply scalar before vector should be operated without error");
 	
 	Vector v(3);
@@ -501,7 +500,7 @@ TEST(VectorScalarOperator, ValidOperator) {
 }
 
 TEST(VectorScalarOperator, ValidOperator2) {
-    DESC("friend Vector operator*(double k, const Vector& a)\n\t\
+	DESC("friend Vector operator*(double k, const Vector& a)\n\t\
          friend Vector operator*(const Vector& a, double k)", "multiply scalar after vector should be valid");
 	
 	Vector v(5);
@@ -516,7 +515,7 @@ TEST(VectorScalarOperator, ValidOperator2) {
 }
 
 TEST(VectorScalarOperator, ValidOperator3) {
-    DESC("friend Vector operator*(double k, const Vector& a)\n\t\
+	DESC("friend Vector operator*(double k, const Vector& a)\n\t\
          friend Vector operator*(const Vector& a, double k)", "two scalars multiply back and forth of vector should be valid");
 	
 	Vector v(3);
@@ -531,36 +530,36 @@ TEST(VectorScalarOperator, ValidOperator3) {
 }
 
 TEST(VectorEqualOperator, ValidOperator) {
-    DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return true for vectors that was created through constructor with identical parameters");
+	DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return true for vectors that was created through constructor with identical parameters");
     
-    Vector v(4, Vector::ROW);
-    Vector v2(4, Vector::ROW);
+	Vector v(4, Vector::ROW);
+	Vector v2(4, Vector::ROW);
     
-    EXPECT_TRUE(v == v2);
+	EXPECT_TRUE(v == v2);
 }
 
 TEST(VectorEqualOperator, ValidOperator2) {
-    DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return true for identical vectors setting with initializer_list");
+	DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return true for identical vectors setting with initializer_list");
     
-    Vector v(5);
-    v = {1, 2, 3, 4, 5};
-    Vector v1(5);
+	Vector v(5);
+	v = {1, 2, 3, 4, 5};
+	Vector v1(5);
 	v1 = {1, 2, 3, 4, 5};
 	   
-    EXPECT_TRUE(v == v1);	
+	EXPECT_TRUE(v == v1);	
 }
 
 TEST(VectorEqualOperator, ValidOperator3) {
-    DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return false if orientation is different");
+	DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return false if orientation is different");
     
-    Vector v(3, Vector::COLUMN);
-    Vector v2(3, Vector::ROW);
+	Vector v(3, Vector::COLUMN);
+	Vector v2(3, Vector::ROW);
     
-    EXPECT_FALSE((v == v2));
+	EXPECT_FALSE((v == v2));
 }
 
 TEST(VectorNotEqualOperator, ValidOperator) {
-    DESC("friend bool operator!=(const Vector& a, const Vector& b)", "Should return true if orientation is different");
+	DESC("friend bool operator!=(const Vector& a, const Vector& b)", "Should return true if orientation is different");
 	
 	Vector v(3, Vector::ROW), v1(3, Vector::COLUMN);
 
@@ -571,7 +570,7 @@ TEST(VectorNotEqualOperator, ValidOperator) {
 }
 
 TEST(VectorNotEqualOperator, ValidOperator2) {
-    DESC("friend bool operator!=(const Vector& a, const Vector& b)", "One element difference should return true");
+	DESC("friend bool operator!=(const Vector& a, const Vector& b)", "One element difference should return true");
 	
 	Vector v(3), v1(3);
 
@@ -582,7 +581,7 @@ TEST(VectorNotEqualOperator, ValidOperator2) {
 }
 
 TEST(VectorNotEqualOperator, ValidOperator3) {
-    DESC("friend bool operator!=(const Vector& a, const Vector& b)", "It should return false if two vectors are identical, otherwise true");
+	DESC("friend bool operator!=(const Vector& a, const Vector& b)", "It should return false if two vectors are identical, otherwise true");
 
 	Vector v(3), v1(3);
 
@@ -593,7 +592,7 @@ TEST(VectorNotEqualOperator, ValidOperator3) {
 }
 
 TEST(VectorTranspose, ValidInput) {
-    DESC("friend Vector trans(const Vector& a)", "Initially set vector to COLUMN and call trans, the result vector should have ROW orientation");
+	DESC("friend Vector trans(const Vector& a)", "Initially set vector to COLUMN and call trans, the result vector should have ROW orientation");
 	
 	Vector v(3, Vector::COLUMN);
 	v = { 1, 2, 3 };
@@ -603,7 +602,7 @@ TEST(VectorTranspose, ValidInput) {
 }
 
 TEST(VectorTranspose, ValidInput2) {
-    DESC("friend Vector trans(const Vector& a)", "Initially set vector to ROW and call trans, the result vector should have COLUMN orientation");
+	DESC("friend Vector trans(const Vector& a)", "Initially set vector to ROW and call trans, the result vector should have COLUMN orientation");
 
 	Vector v(3, Vector::ROW);
 	v = { 2, 3, 4 };
@@ -613,7 +612,7 @@ TEST(VectorTranspose, ValidInput2) {
 }
 
 TEST(VectorTranspose, ValidInput3) {
-    DESC("friend Vector trans(const Vector& a)", "valid trans twice, the result should be same as parameter vector");
+	DESC("friend Vector trans(const Vector& a)", "valid trans twice, the result should be same as parameter vector");
 
 	Vector v(3, Vector::ROW);
 	v = { 1, 2, 3 };
