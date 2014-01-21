@@ -7,7 +7,6 @@
  *
  * Date: Jan 13th, 2014
  *
- * This work complies with the JMU Honor Code.
  */
 
 
@@ -394,7 +393,6 @@ TEST(VectorPlusOperator, ValidOperator2) {
 	EXPECT_TRUE(arrayMatch(expected, result.get_content()));
 }
 
-
 TEST(VectorPlusOperator, InvalidOperator) {
     DESC("friend Vector operator+(const Vector& a, const Vector& b)", "Adding different size of vector should throw exception");
 	Vector v(3);
@@ -516,8 +514,6 @@ TEST(VectorScalarOperator, ValidOperator2) {
 	
 	EXPECT_TRUE(arrayMatch(expected, v.get_content()));
 }
-
-
 
 TEST(VectorScalarOperator, ValidOperator3) {
     DESC("friend Vector operator*(double k, const Vector& a)\n\t\
