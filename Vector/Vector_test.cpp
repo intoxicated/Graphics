@@ -584,7 +584,7 @@ TEST(VectorEqualOperator, ValidOperator2) {
 TEST(VectorEqualOperator, ValidOperator3) {
     DESC("friend bool operator==(const Vector& a, const Vector& b)", "Should return false if orientation is different");
     
-	Vector v(3, Vector::COLUMN), v2(3, Vector::ROW);
+    Vector v(3, Vector::COLUMN), v2(3, Vector::ROW);
     
     EXPECT_FALSE((v == v2));
 }
