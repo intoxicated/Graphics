@@ -44,7 +44,7 @@ TEST_F(MatrixUnittest, constructor_valid)
 }
 
 /**
- *
+ * Test copy construct with valid input, should have same value of original matrix
  */
 TEST_F(MatrixUnittest, constructor_copy_valid)
 {
@@ -56,27 +56,28 @@ TEST_F(MatrixUnittest, constructor_copy_valid)
 }
 
 /**
- *
+ * Test operator= initializer_list, should have correct value
  */
-TEST_F(MatrixUnittest, constructor_invalid)
-{
-
-}
-
 TEST_F(MatrixUnittest, operator_initlist_assign_valid)
 {
-    //std::cout << "VALUE" << a(1,0) << endl;
     EXPECT_EQ(a(0,1), 1);
     EXPECT_EQ(a(1,1), 2);
     EXPECT_EQ(c(2,4), 6); 
 }
 
+/**
+ * Test operator= initializer_list, should have correct value 
+ */
 TEST_F(MatrixUnittest, operator_initlist_assign_valid2)
 {
     EXPECT_EQ(b(0,0), 1.03);
     EXPECT_EQ(b(1,1), 49.2);
 }
 
+/**
+ * Test operator= initializer_list with unmatched dimension matrix
+ * it should throw length error expcetion
+ */
 TEST_F(MatrixUnittest, operator_initlist_invalid)
 {
     Matrix<2,2> result;
@@ -84,6 +85,9 @@ TEST_F(MatrixUnittest, operator_initlist_invalid)
     EXPECT_THROW((result = { 1.5315, 483.34 }), std::length_error);
 }
 
+/**
+ * Test operator= other matrix, should have same value of right hand matrix
+ */
 TEST_F(MatrixUnittest, operator_assign_valid)
 {
     Matrix<2,2> result;
@@ -93,6 +97,9 @@ TEST_F(MatrixUnittest, operator_assign_valid)
     EXPECT_EQ(b(1,1), result(1,1));
 }
 
+/**
+ * Test operator= other matrix, should have same value of right hand matrix
+ */
 TEST_F(MatrixUnittest, operator_assign_valid2)
 {
     Matrix<3,3> result;
@@ -102,14 +109,20 @@ TEST_F(MatrixUnittest, operator_assign_valid2)
     EXPECT_EQ(a(2,2), result(2,2));
 }
 
-TEST_F(MatrixUnittest, operator_assign_valid3)
+/**
+ * Test operator= other matrix with invalid right hand matrix
+ * Since we uses template to catch this error in compile time
+ * we do not need to test as normal test case
+ */
+TEST_F(MatrixUnittest, operator_assign_invalid)
 {
-    //since different dimension assignmnet will causes compile time error
-    //no need to test invalid assignment operator
-
     //Matrix<2,2> result;
+    //result = a; <-- compile error
 }
 
+/**
+ * test operator() (int) with valid input, should return correct value
+ */
 TEST_F(MatrixUnittest, operator_access_singleRL_valid)
 {
     Matrix<1,3> result;
@@ -120,6 +133,9 @@ TEST_F(MatrixUnittest, operator_access_singleRL_valid)
     EXPECT_EQ(result(2), 3);
 }
 
+/**
+ * test operator() (int) with valid input, should return correct value
+ */
 TEST_F(MatrixUnittest, operator_access_singleRL_valid2)
 {
     Matrix<3,1> result;
@@ -131,6 +147,11 @@ TEST_F(MatrixUnittest, operator_access_singleRL_valid2)
 
 }
 
+/**
+ * test opeator() (int) with invalid input
+ * it should throw out of range if input is not valid
+ * it should throw length error if matrix is not <1,R> or <R,1>
+ */
 TEST_F(MatrixUnittest, operator_access_singleRL_invalid)
 {
     Matrix<1,3> result;
@@ -138,9 +159,13 @@ TEST_F(MatrixUnittest, operator_access_singleRL_invalid)
     result = {5,53.21, 93.1};
     EXPECT_THROW(result(3), std::out_of_range);
     EXPECT_THROW(a(1), std::length_error);
-    EXPECT_THROW(b(3), std::length_error);
+    EXPECT_THROW(b(3), std::length_error); 
 }
 
+/**
+ * test opetator() (int,int) with valid input
+ * it should return correct value from matrix
+ */
 TEST_F(MatrixUnittest, operator_access_valid)
 {
     EXPECT_NO_THROW(b(1,1));
@@ -149,6 +174,10 @@ TEST_F(MatrixUnittest, operator_access_valid)
     EXPECT_EQ(b(1,1), 49.2);
 }
 
+/**
+ * test opetator() (int,int) with valid input
+ * it should return correct value from matrix
+ */
 TEST_F(MatrixUnittest, operator_access_valid2)
 {
     EXPECT_NO_THROW(a(1,2));
@@ -157,6 +186,10 @@ TEST_F(MatrixUnittest, operator_access_valid2)
     EXPECT_EQ(a(2,0), 3);
 }
 
+/**
+ * test operator() (int,int) with invalid input
+ * it should throw out of range exception 
+ */
 TEST_F(MatrixUnittest, operator_access_invalid)
 {
     EXPECT_THROW(b(-1,1), std::out_of_range);
@@ -166,8 +199,8 @@ TEST_F(MatrixUnittest, operator_access_invalid)
 }
 
 /** 
- *  No test needs for invalid  operator plus/minus/multiply since 
- *  it can be caught in compile time
+ * test operator+ (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a+b value)
  */
 TEST_F(MatrixUnittest, operator_plus_valid)
 {
@@ -178,6 +211,10 @@ TEST_F(MatrixUnittest, operator_plus_valid)
     EXPECT_DOUBLE_EQ(result(1,1), 58.4413);
 }
 
+/** 
+ * test operator+ (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a+b value)
+ */
 TEST_F(MatrixUnittest, operator_plus_valid2)
 {
     Matrix<3,3> result, other;
@@ -189,6 +226,10 @@ TEST_F(MatrixUnittest, operator_plus_valid2)
     EXPECT_EQ(result(2,2), 6);
 }
 
+/** 
+ * test operator+ (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a+b value)
+ */
 TEST_F(MatrixUnittest, operator_plus_valid3)
 {
     Matrix<3,5> other;
@@ -202,6 +243,20 @@ TEST_F(MatrixUnittest, operator_plus_valid3)
     EXPECT_EQ(result(1,3), (c(1,3) * 2));
 }
 
+/**
+ * test operator+ (Matrix, Matrix) with invalid operand
+ *  we catch this in compile time 
+ */
+TEST_F(MatrixUnittest, operator_plus_invalid)
+{
+    //Matrix<2,2> result;
+    //result = a + b;
+}
+
+/** 
+ * test operator- (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a-b value)
+ */
 TEST_F(MatrixUnittest, operator_minus_valid)
 {
     Matrix<2,2> result;
@@ -212,6 +267,10 @@ TEST_F(MatrixUnittest, operator_minus_valid)
     EXPECT_DOUBLE_EQ(result(1,1), 39.9587);
 }
 
+/** 
+ * test operator- (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a-b value)
+ */
 TEST_F(MatrixUnittest, operator_minus_valid2)
 {
     Matrix<2,2> result;
@@ -222,6 +281,10 @@ TEST_F(MatrixUnittest, operator_minus_valid2)
     EXPECT_DOUBLE_EQ(result(0,1), 87.71);
 }
 
+/** 
+ * test operator- (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a-b value)
+ */
 TEST_F(MatrixUnittest, operator_minus_valid3)
 {
     Matrix<3,3> other;
@@ -237,6 +300,20 @@ TEST_F(MatrixUnittest, operator_minus_valid3)
     EXPECT_EQ(result(2,0), 4);
 }
 
+/**
+ * test operator- (Matrix, Matrix) with invalid operand
+ * we catch this in compile time
+ */
+TEST_F(MatrixUnittest, operator_minus_invalid)
+{
+    //Matrix<3,3> result;
+    //result = a - b;
+}
+
+/** 
+ * test operator* (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a*b value)
+ */
 TEST_F(MatrixUnittest, operator_multiply_valid)
 {
     Matrix<1,2> ta;
@@ -252,6 +329,10 @@ TEST_F(MatrixUnittest, operator_multiply_valid)
     EXPECT_EQ(r(0,0), 11);
 }
 
+/** 
+ * test operator* (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a*b value)
+ */
 TEST_F(MatrixUnittest, operator_multiply_valid2)
 {
     Matrix<3,4> ta;
@@ -272,6 +353,10 @@ TEST_F(MatrixUnittest, operator_multiply_valid2)
             (1.03*0.43 + 3.53*8.42 + 9.32*9.63 + 2.31*3.1));
 }
 
+/** 
+ * test operator* (Matrix, Matrix) with valid operand
+ * the result matrix should have correct value (i.e. a*b value)
+ */
 TEST_F(MatrixUnittest, operator_multiply_valid3)
 {
     Matrix<2,4> ta;
@@ -293,6 +378,21 @@ TEST_F(MatrixUnittest, operator_multiply_valid3)
     EXPECT_EQ(result(1,1), 12);
 }
 
+/**
+ * test operator* (Matrix, Matrix) with invalid operand
+ * we catch this in compile time
+ */
+TEST_F(MatrixUnittest, operator_multiply_invalid)
+{
+    //Matrix<2,2> result;
+    //reult = a * b;
+}
+
+/**
+ * test operator* (double, Matrix) with valid operand
+ * The result matrix should have value with each spot 
+ * multiply by scalar
+ */
 TEST_F(MatrixUnittest, operator_scalar_multiply_valid)
 {
     Matrix<2,2> ta;
@@ -304,19 +404,54 @@ TEST_F(MatrixUnittest, operator_scalar_multiply_valid)
 
     result = ta * 2;
 
-
+    EXPECT_EQ(result(0,0), 2);
+    EXPECT_EQ(result(0,1), 4);
+    EXPECT_EQ(result(1,0), 6);
+    EXPECT_EQ(result(1,1), 8);
 }
 
+/**
+ * test operator* (double, Matrix) with valid operand
+ * The result matrix should have value with each spot 
+ * multiply by scalar
+ */
 TEST_F(MatrixUnittest, operator_scalar_multiply_valid2)
 {
+    Matrix<3,3> result;
 
+    result = a * 1.5;
+
+    EXPECT_EQ(result(0,0), 1.5);
+    EXPECT_EQ(result(0,1), 1.5);
+    EXPECT_EQ(result(0,2), 1.5);
+    EXPECT_EQ(result(1,0), 3);
+    EXPECT_EQ(result(1,1), 3);
+    EXPECT_EQ(result(1,2), 3);
+    EXPECT_EQ(result(2,0), 4.5);
+    EXPECT_EQ(result(2,1), 4.5);
 }
 
+/**
+ * test operator* (double, Matrix) with valid operand
+ * The result matrix should have value with each spot 
+ * multiply by scalar
+ */
 TEST_F(MatrixUnittest, operator_scalar_multiply_valid3)
 {
+    Matrix<2,2> result;
 
+    result = 1.0584 * d;
+    
+    EXPECT_EQ(result(0,0), 1.0584 * 3.59);
+    EXPECT_EQ(result(0,1), 1.0584 * 89.2);
+    EXPECT_EQ(result(1,0), 1.0584 * 0.421);
+    EXPECT_EQ(result(1,1), 1.0584 * 9.2413);
 }
 
+/** 
+ * test operator== (Matrix, Matrix) 
+ * it should return true if compared values are within TOLERANCE
+ */
 TEST_F(MatrixUnittest, operator_equal_valid)
 {
     Matrix<2,2> ta;
@@ -326,6 +461,10 @@ TEST_F(MatrixUnittest, operator_equal_valid)
     EXPECT_TRUE(ta == b);
 }
 
+/** 
+ * test operator== (Matrix, Matrix) 
+ * it should return true if compared values are within TOLERANCE
+ */
 TEST_F(MatrixUnittest, operator_equal_valid2)
 {
     Matrix<2,2> ta;
@@ -335,6 +474,10 @@ TEST_F(MatrixUnittest, operator_equal_valid2)
     EXPECT_TRUE(ta != b);
 }
 
+/** 
+ * test operator== (Matrix, Matrix) 
+ * it should return true if compared values are within TOLERANCE
+ */
 TEST_F(MatrixUnittest, operator_equal_valid3)
 {
 
@@ -462,21 +605,6 @@ TEST_F(MatrixUnittest, cof_valid3)
     EXPECT_EQ(result, -33);
 }
 
-TEST_F(MatrixUnittest, submatrix_2x2_valid)
-{
-   
-}
-
-TEST_F(MatrixUnittest, submatrix_2x2_valid2)
-{
-
-}
-
-TEST_F(MatrixUnittest, submatrix_2x2_valid3)
-{
-
-}
-
 TEST_F(MatrixUnittest, submatrix_valid)
 {
     Matrix <2,2> result;
@@ -523,9 +651,7 @@ TEST_F(MatrixUnittest, det_valid)
            1, 9}; // det is 2*9 - 4*1 = 14
 
     double result = det(ta);
-    double more = det<2,2>(10);
 
-    EXPECT_EQ(10, more);
     EXPECT_EQ(14, result);
 }
 
@@ -573,12 +699,6 @@ TEST_F(MatrixUnittest, det_valid4)
 
     EXPECT_EQ(0, result);
 }
-
-TEST_F(MatrixUnittest, det_double_valid)
-{
-
-}
-
 
 TEST_F(MatrixUnittest, getcolumn_valid)
 {
