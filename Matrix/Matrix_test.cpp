@@ -462,7 +462,7 @@ TEST_F(MatrixUnittest, operator_equal_valid)
 }
 
 /** 
- * test operator== (Matrix, Matrix) 
+ * test operator=! (Matrix, Matrix) 
  * it should return true if compared values are within TOLERANCE
  */
 TEST_F(MatrixUnittest, operator_equal_valid2)
@@ -477,12 +477,17 @@ TEST_F(MatrixUnittest, operator_equal_valid2)
 /** 
  * test operator== (Matrix, Matrix) 
  * it should return true if compared values are within TOLERANCE
+ * if dimension is different, we catch it in compile time
  */
 TEST_F(MatrixUnittest, operator_equal_valid3)
 {
-
+//    EXPECT_FALSE(a == b);
 }
 
+/**
+ * test trans(Matrix) 
+ * should return a transposed matrix
+ */
 TEST_F(MatrixUnittest, trans_valid)
 {
     Matrix<2,2> result;
@@ -495,6 +500,10 @@ TEST_F(MatrixUnittest, trans_valid)
     EXPECT_DOUBLE_EQ(result(1,1), 49.2);
 }
 
+/**
+ * test trans(Matrix) 
+ * should return a transposed matrix
+ */
 TEST_F(MatrixUnittest, trans_valid2)
 {
     Matrix<4,1> result;
@@ -510,6 +519,10 @@ TEST_F(MatrixUnittest, trans_valid2)
     EXPECT_EQ(result(3,0), 4);
 }
 
+/**
+ * test identity() 
+ * should return apropriate size of identity matrix
+ */
 TEST_F(MatrixUnittest, identity_valid)
 {
     Matrix<2,2> idn = identity<2>();
@@ -520,6 +533,10 @@ TEST_F(MatrixUnittest, identity_valid)
     EXPECT_EQ(idn(1,1), 1);
 }
 
+/**
+ * test identity() 
+ * should return apropriate size of identity matrix
+ */
 TEST_F(MatrixUnittest, identity_valid2)
 {
     Matrix<3,3> idn = identity<3>();
@@ -531,11 +548,10 @@ TEST_F(MatrixUnittest, identity_valid2)
     EXPECT_EQ(idn(2,1), 0);
 }
 
-TEST_F(MatrixUnittest, identity_valid3)
-{
-    EXPECT_THROW(identity<0>(), std::length_error);
-}
-
+/**
+ * test operator| (Matrix, Matrix) with valid inputs
+ * should return a matrix that has a | b values
+ */
 TEST_F(MatrixUnittest, operator_concat_valid)
 {
     Matrix<2,4> result;
@@ -548,6 +564,10 @@ TEST_F(MatrixUnittest, operator_concat_valid)
     EXPECT_EQ(result(0,3), d(0,1));
 }
 
+/**
+ * test operator| (Matrix, Matrix) with valid inputs
+ * should return a matrix that has a | b values
+ */
 TEST_F(MatrixUnittest, operator_concat_valid2)
 {
     Matrix<4,4> result;
@@ -573,11 +593,22 @@ TEST_F(MatrixUnittest, operator_concat_valid2)
 
 }
 
-TEST_F(MatrixUnittest, operator_concat_valid3)
+/**
+ * test operator| (Matrix, Matrx) with invalid inputs
+ * if two matrices' rows are not match, it cannot be concated
+ * we catch this in compile time
+ */
+TEST_F(MatrixUnittest, operator_concat_invalid)
 {
-
+    //Matrix<4,4> result;
+    //result = a | b;
 }
 
+/**
+ * test cof(Matrix, int, int) with valid values
+ * it should return cofactor of given matrix and 
+ * exclude given row and column
+ */
 TEST_F(MatrixUnittest, cof_valid)
 {
     double result = cof(b, 0, 0);
@@ -585,6 +616,11 @@ TEST_F(MatrixUnittest, cof_valid)
     EXPECT_EQ(result, 49.2);
 }
 
+/**
+ * test cof(Matrix, int, int) with valid values
+ * it should return cofactor of given matrix and 
+ * exclude given row and column
+ */
 TEST_F(MatrixUnittest, cof_valid2)
 {
     double result = cof(a, 0, 0);
@@ -592,6 +628,11 @@ TEST_F(MatrixUnittest, cof_valid2)
     EXPECT_EQ(result, 0);
 }
 
+/**
+ * test cof(Matrix, int, int) with valid values
+ * it should return cofactor of given matrix and 
+ * exclude given row and column
+ */
 TEST_F(MatrixUnittest, cof_valid3)
 {
     Matrix<3,3> ta;
@@ -605,6 +646,21 @@ TEST_F(MatrixUnittest, cof_valid3)
     EXPECT_EQ(result, -33);
 }
 
+/**
+ * test cof(Matrix, int, int) with invalid values
+ * it should throw out of range exception
+ */
+TEST_F(MatrixUnittest, cof_invalid)
+{
+    double result;
+
+    EXPECT_THROW((result = cof(a, -1, 0)), std::out_of_range);
+}
+
+/**
+ * test Matrix submatrix(Matrix,int,int) with valid values
+ * it should return submatrix of given matrix 
+ */
 TEST_F(MatrixUnittest, submatrix_valid)
 {
     Matrix <2,2> result;
@@ -615,6 +671,10 @@ TEST_F(MatrixUnittest, submatrix_valid)
     EXPECT_EQ(result(1,1), 3);
 }
 
+/**
+ * test Matrix submatrix(Matrix,int,int) with valid values
+ * it should return submatrix of given matrix 
+ */
 TEST_F(MatrixUnittest, submatrix_valid2)
 {
     Matrix<2,4> result;
@@ -625,6 +685,10 @@ TEST_F(MatrixUnittest, submatrix_valid2)
     EXPECT_EQ(result(1,3), 6);
 }
 
+/**
+ * test Matrix submatrix(Matrix,int,int) with valid values
+ * it should return submatrix of given matrix 
+ */
 TEST_F(MatrixUnittest, submatrix_valid3)
 {
 
@@ -644,6 +708,10 @@ TEST_F(MatrixUnittest, submatrix_valid3)
     EXPECT_EQ(result(1,1), 2);
 }
 
+/**
+ * test det(Matrix) with givnen matrix
+ * it should return correct determinent of matrix
+ */
 TEST_F(MatrixUnittest, det_valid)
 {
     Matrix<2,2> ta;
@@ -655,7 +723,10 @@ TEST_F(MatrixUnittest, det_valid)
     EXPECT_EQ(14, result);
 }
 
-
+/**
+ * test det(Matrix) with givnen matrix
+ * it should return correct determinent of matrix
+ */
 TEST_F(MatrixUnittest, det_valid2)
 {
     Matrix<3,3> ta;
@@ -671,6 +742,10 @@ TEST_F(MatrixUnittest, det_valid2)
     EXPECT_EQ(-15, result);
 }
 
+/**
+ * test det(Matrix) with givnen matrix
+ * it should return correct determinent of matrix
+ */
 TEST_F(MatrixUnittest, det_valid3)
 {
     Matrix<4,4> ta;
@@ -685,6 +760,10 @@ TEST_F(MatrixUnittest, det_valid3)
     EXPECT_EQ(484, result);
 }
 
+/**
+ * test det(Matrix) with givnen matrix
+ * it should return correct determinent of matrix
+ */
 TEST_F(MatrixUnittest, det_valid4)
 {
     Matrix<5,5> ta;
@@ -700,6 +779,10 @@ TEST_F(MatrixUnittest, det_valid4)
     EXPECT_EQ(0, result);
 }
 
+/** 
+ * test getColumn(int) 
+ * it should return column matrix <R,1> with given <R,C> matrix
+ */
 TEST_F(MatrixUnittest, getcolumn_valid)
 {
     Matrix <2,1> result;
@@ -712,17 +795,37 @@ TEST_F(MatrixUnittest, getcolumn_valid)
 
 }
 
+/** 
+ * test getColumn(int) 
+ * it should return column matrix <R,1> with given <R,C> matrix
+ */
 TEST_F(MatrixUnittest, getcolumn_valid2)
 {
+    Matrix<3,1> result;
 
+    result = a.getColumn(1);
+
+    EXPECT_EQ(result(0,0), a(0,1));
+    EXPECT_EQ(result(1,0), a(1,1));
+    EXPECT_EQ(result(2,0), a(2,1));
 
 }
 
+/** 
+ * test getColumn(int)  with invalid values
+ * it should throw exception
+ */
 TEST_F(MatrixUnittest, getcolumn_valid3)
 {
+    Matrix<3,1> result;;
 
+    EXPECT_THROW((result = a.getColumn(4)), std::out_of_range);
 }
 
+/**
+ * test minor(Matrix, int, int)
+ * it should return minor of given matrix
+ */
 TEST_F(MatrixUnittest, minor_valid)
 {
     double result = matrix_minor(b, 0, 0);
@@ -730,14 +833,13 @@ TEST_F(MatrixUnittest, minor_valid)
     EXPECT_EQ(result, 49.2);
 }
 
+/**
+ * test minor(Matrix, int, int)
+ * it should return minor of given matrix
+ */
 TEST_F(MatrixUnittest, minor_valid2)
 {
     double result = matrix_minor(a, 0, 0);
 
     EXPECT_EQ(result, 0);
-}
-
-TEST_F(MatrixUnittest, minor_valid3)
-{
-
 }

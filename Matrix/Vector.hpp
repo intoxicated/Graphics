@@ -133,8 +133,8 @@ double norm(const Matrix<R,1>& a)
     double ret = 0.0;
 
     for(int i = 0; i < R; ++i)
-        ret += pow(a(i,0), 2);
-    return ret;
+        ret += pow(a.get(i,0), 2);
+    return sqrt(ret);
 }
 
 
@@ -150,7 +150,7 @@ Matrix<R,1> normalized(const Matrix<R,1>& a)
     Matrix<R,1> ret;
     double normval = norm(a);
     for(int i = 0; i < R; ++i)
-        ret(i,0) = ret(i,0) / normval;
+        ret(i,0) = a.get(i,0) / normval;
     return ret;
 }
 
@@ -158,12 +158,16 @@ Matrix<R,1> normalized(const Matrix<R,1>& a)
 /**
  * Assign an initializer_list to this Vector of size R
  *
+ * @throws    length error if vector size is not match 
  * @param m   The initializer_list containing the values
  * @return    The Vector referred to by this
  */
 template<int R>
 Vector<R>& Vector<R>::operator=(std::initializer_list<double> m)
 {
+   if(m.size() != R)
+       throw std::length_error("operator=: size is different");
+
    const double*    values;
    
    values = m.begin();   // Returns a pointer to the first element

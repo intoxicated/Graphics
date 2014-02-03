@@ -354,7 +354,7 @@ class Matrix
      *
      * @param a   The left matrix
      * @param b   The right matrix
-     * @return    true if any elements are different; false otherwise
+     @return    true if any elements are different; false otherwise
      */
     template <int R, int C>
     friend bool operator!=(const Matrix<R,C>& a, const Matrix<R,C>& b);
@@ -631,7 +631,7 @@ double Matrix<R,C>::get(int i) const
 template <int R, int C>
 Matrix<R,1> Matrix<R,C>::getColumn(int c) const
 {
-    if(c > this->columns)
+    if(c > C)
         throw std::out_of_range("GetColumn: out of range\n");
 
     Matrix<R, 1> retMatrix;
