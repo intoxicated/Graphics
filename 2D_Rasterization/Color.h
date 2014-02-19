@@ -1,5 +1,5 @@
-#ifndef edu_jmu_cs_Color_h
-#define edu_jmu_cs_Color_h
+#ifndef __COLOR_H__
+#define __COLOR_H__
 
 /**
  * A simple representation of a Color

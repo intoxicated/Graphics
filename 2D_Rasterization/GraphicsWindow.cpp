@@ -20,10 +20,10 @@ GraphicsWindow::GraphicsWindow(int width, int height)
    SDL_Init(SDL_INIT_VIDEO);
    
    // Note: The size of the window is actually the size of the renderable area
-   window   = SDL_CreateWindow("JMU - CS488", 
+   window   = SDL_CreateWindow("JMU - CS588", 
                                SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                width, height, 
-                               0);
+                               SDL_WINDOW_OPENGL);
    if(window==NULL) throw(std::runtime_error("Unable to construct a window."));
 
    frameBuffer = new FrameBuffer(window, width, height);

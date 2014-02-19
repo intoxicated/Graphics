@@ -1,8 +1,8 @@
-#ifndef edu_jmu_cs_GraphicsWindow_h
-#define edu_jmu_cs_GraphicsWindow_h
+#ifndef __GRAPHICSWINDOW_H__
+#define __GRAPHICSWINDOW_H__
 
 #include "FrameBuffer.h"
-#include "SDL2/SDL.h" 
+#include <SDL2/SDL.h> 
 #include <stdexcept>
 
 class GraphicsWindow

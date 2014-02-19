@@ -1,11 +1,18 @@
-#ifndef edu_jmu_cs_Geometry_hpp
-#define edu_jmu_cs_Geometry_hpp
+/**
+ * Geometry template 
+ *
+ * author: Wooyoung Chung
+ *
+ * 2/14/14
+ */
 
+#ifndef __GEOMETRY_HPP__
+#define __GEOMETRY_HPP__
 
 
 #include <cmath>
-#include "../pa5/Matrix.hpp"
-#include "../pa5/Vector.hpp"
+#include "../Matrix/Matrix.hpp"
+#include "../Matrix/Vector.hpp"
 
 /**
  * A utility class (actually template) that can perform various
@@ -49,7 +56,16 @@ Vector<2> perp(const Matrix<2,1>& a);
 template <int N>
 double toImplicit(const Matrix<2,1>& p, const Matrix<2,1>& q, Matrix<2,1>* n);
 
+template <int N>
+bool signedArea(const Matrix<2,1>& p, const Matrix<2,1>& r, 
+    const Matrix<2,1>& s);
 
+template <int N>
+int testHalfspace(const Matrix<2,1>& p, const Matrix<2,1>& r,
+       const Matrix<2,1>& a, const Matrix<2,1>& b);
+
+template <int N>
+int testHalfspace(const Matrix<2,1>& p, const Matrix<2,1>& n, double b);
 
 /**
  * Compute the area of a triangle from its three vertices
@@ -67,11 +83,24 @@ double toImplicit(const Matrix<2,1>& p, const Matrix<2,1>& q, Matrix<2,1>* n);
 template <int N>
 double area(const Matrix<2,1>& a, const Matrix<2,1>& b, const Matrix<2,1>& c)
 {
+    Vector<2> na, nb, nc;
+    na = { 0, 0 };
+    nb = b - a;
+    nc = c - a;
+
+    Matrix<2,2> aa, bb, cc;
+    aa = na | nb ;
+    bb = nb | nc ;
+    cc = nc | na ;
+
+    double retVal = 0.5 * (det(aa) + det(bb) + det(cc));
+    
+    return retVal;
 }
 
 
 /**
- * Returns the point alpha q + (1-alpha)r
+ * Returns the point alpha q + (1-alpha)
  *
  * @param q      One point
  * @param r      The other points
@@ -80,6 +109,9 @@ double area(const Matrix<2,1>& a, const Matrix<2,1>& b, const Matrix<2,1>& c)
 template <int N>
 Vector<N> barycentricCombination(const Matrix<N,1>& q, const Matrix<N,1>& r, double alpha)
 {
+    Vector<N> ret;
+    ret = (alpha *q) + ((1-alpha)*r);
+    return ret;
 }
 
 
@@ -96,10 +128,81 @@ Vector<N> barycentricCombination(const Matrix<N,1>& q, const Matrix<N,1>& r, dou
 template <int R, int C>
 Matrix<R,2> getBounds(const Matrix<R,C>& p)
 {
+    Vector<R> minVal;
+    Vector<R> maxVal;
+
+    //initially set to first vector for max and min
+    for(int i = 0; i < R; ++i)
+    {
+        minVal(i) = p.get(i,0);
+        maxVal(i) = p.get(i,0);
+    }
+
+    for(int i = 1; i < C; ++i)
+    {
+        for(int j = 0; j < R; ++j)
+        {
+            if(minVal(j) > p.get(j,i)) 
+                minVal(j) = p.get(j,i);
+            if(maxVal(j) < p.get(j,i))
+                maxVal(j) = p.get(j,i);
+        }
+    }
+    
+    return minVal | maxVal;
 }
 
 
-//2D
+/**
+ * calculate signed area of triangle with given three vectors
+ *
+ * @return true if signed area is positive, otherwise false
+ */
+template <int N>
+bool signedArea(const Matrix<2,1>& p, const Matrix<2,1>& r,
+            const Matrix<2,1>& s)
+{
+   Matrix<2,2> rs;
+   rs = (s-r) | (p-r);
+   return (det(rs) > 0.0f) ? true : false;
+}
+
+/** 
+ * test if given two vectors are same side of line 
+ *
+ * @param p one vector
+ * @param r other vector
+ * @param a one point of line
+ * @param b the other point of line
+ * @return 1 if p and r is same side, -1 otherwise.
+ */
+template <int N>
+int testHalfspace(const Matrix<2,1>& p, const Matrix<2,1>& r, 
+        const Matrix<2,1>& a, const Matrix<2,1>& b)
+{
+    Matrix<2,1> n,m;
+    double scalarB;
+
+    scalarB = toImplicit<2>(a,b, &n);
+    int retA = (dot(n,p) + scalarB >= 0) ? 1 : -1;
+    int retB = (dot(n,r) + scalarB >= 0) ? 1 : -1;
+    return (retA == retB) ? 1 : -1;
+}
+
+/**
+ *  test halfspace of given point p with implicit form of line r.p = b
+ *  
+ *  @param p testing vector
+ *  @param n vector parameter of homogeneous form
+ *  @param b scalar paramter of homogeneous form 
+ *  @return signed of half space of point 
+ */
+template <int N>
+int testHalfspace(const Matrix<2,1>& p, const Matrix<2,1>& n, double b)
+{
+    return (dot(n,p) + b >= 0) ? 1 : -1;
+}
+
 /**
  * Determine whether the point p is inside the triangle
  * formed by the vertices r, s, t
@@ -116,6 +219,11 @@ template <int N>
 bool inside(const Matrix<2,1>& p, 
             const Matrix<2,1>& r, const Matrix<2,1>& s, const Matrix<2,1>& t)
 {
+    int sign1 = signedArea<2>(p,r,s);
+    int sign2 = signedArea<2>(p,s,t);
+    int sign3 = signedArea<2>(p,t,r);
+    
+    return ((sign1 == sign2) && (sign2 == sign3)) ? true : false;
 }
 
 
@@ -158,6 +266,22 @@ bool intersect(const Matrix<2,1>& p, const Matrix<2,1>& q,
                const Matrix<2,1>& r, const Matrix<2,1>& s,
                double& alpha, double& beta)
 {
+    Vector<2> n,t, pq, rs;
+    double ai, bi;
+
+    ai = toImplicit<2>(p, q, &n);
+    bi = toImplicit<2>(r, s, &t);
+
+    //if they are intersected, calculate intersection point
+    if( n != t )
+    {
+       //change to parametric form
+       pq = q - p, rs = s - r;
+       
+       alpha = dot((r - p), perp<2>(rs)) / dot(pq, perp<2>(rs));
+       beta = dot((p - r), perp<2>(pq)) / dot(rs, perp<2>(pq));
+    }
+    return (n != t) ? true : false;
 }
 
 
@@ -170,6 +294,9 @@ bool intersect(const Matrix<2,1>& p, const Matrix<2,1>& q,
 template <int N>
 Vector<2> perp(const Matrix<2,1>& a)
 {
+    Vector<2> ret;
+    ret = {-a.get(1,0), a.get(0,0)};
+    return ret;
 }
 
 
@@ -193,6 +320,11 @@ Vector<2> perp(const Matrix<2,1>& a)
 template <int N>
 double toImplicit(const Matrix<2,1>& p, const Matrix<2,1>& q, Matrix<2,1>* n)
 {
+    double ret;
+    
+    *n = perp<2>(p - q);
+    ret = -(dot(*n, p));
+    return ret;
 }
 
 #endif

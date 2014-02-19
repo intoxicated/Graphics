@@ -1,12 +1,20 @@
-#ifndef edu_jmu_cs_Rasterizer2D_h
-#define edu_jmu_cs_Rasterizer2D_h
+/**
+ * 2D Rasterization Header
+ *
+ * Author: Wooyoung Chung
+ *
+ * 2/14/14
+ */
+
+#ifndef __RASTERIZER2D_H__
+#define __RASTERIZER2D_H__
 
 #include "Color.h"
 #include "FrameBuffer.h"
 #include "Geometry.hpp"
-#include <math.h>
-#include "../pa5/Matrix.hpp"
-#include "../pa5/Vector.hpp"
+#include <cmath>
+#include "../Matrix/Matrix.hpp"
+#include "../Matrix/Vector.hpp"
 
 /**
  * An encapsulation of objects that can render various 2-D

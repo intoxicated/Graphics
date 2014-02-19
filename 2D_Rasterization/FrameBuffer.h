@@ -1,8 +1,8 @@
-#ifndef edu_jmu_cs_FrameBuffer_h
-#define  edu_jmu_cs_FrameBuffer_h
+#ifndef __FRAMEBUFFER_H__
+#define __FRAMEBUFFER_H__
 
 #include "Color.h"
-#include "SDL2/SDL.h" 
+#include <SDL2/SDL.h>
 
 /**
  * An encapsulation of a FrameBuffer that can be used to implement
