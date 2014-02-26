@@ -1,5 +1,5 @@
-#ifndef __Rasterizer3D_h__
-#define __Rasterizer3D_h__
+#ifndef __Rasterizer3D_H__
+#define __Rasterizer3D_H__
 
 #include "../2D_Rasterization/Color.h"
 #include "../2D_Rasterization/Geometry.hpp"

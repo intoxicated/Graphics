@@ -13,6 +13,7 @@
 
 #define TOLERANCE   0.0001
 
+#include <iostream>
 #include <cmath>
 #include <initializer_list>
 #include <math.h>
@@ -25,7 +26,8 @@ using namespace std;
 // (so that it can be used in the friend prototypes)
 template <int R, int C> class Matrix;
 
-
+template <int R, int C>
+void printMatrix(const Matrix<R,C>& a);
 // Prototypes of friend functions 
 template <int RC>
 double cof(const Matrix<RC,RC>& a, int i, int j);
@@ -232,6 +234,9 @@ class Matrix
     template <int RC>
     friend double matrix_minor(const Matrix<RC,RC>& a, int i, int j);
   
+
+    template <int R, int C>
+    friend void printMatrix(const Matrix<R,C>& a);
     /**
      * Access an element of this RALL x CALL Matrix using the 
      * function-call operator.
@@ -254,7 +259,8 @@ class Matrix
      * @return    The the element
      */
     double& operator()(int i);
-    
+   
+
     /**
      * Assign an initializer_list to this RALL x CALL Matrix
      *
@@ -458,6 +464,18 @@ void Matrix<R,C>::allocateMemory(int rows, int columns)
 }
 
 
+template <int R, int C>
+void printMatrix(const Matrix<R,C>& a)
+{
+    for(int i = 0; i < R; ++i)
+    {
+        for(int j = 0; j < C; ++j)
+        {
+            std::cout << a.get(i,j) << " ";
+        }
+    }
+
+}
 /**
  * Calculate the cofactor of an RC x RC matrix (i.e., the signed
  * determinate of the matrix with row i and column j removed)
@@ -533,7 +551,8 @@ double det(const Matrix<RC,RC>& a)
     }
     else if(RC == 2)
     {
-        result = a.values[0][0] * a.values[1][1] - a.values[0][1] * a.values[1][0];
+        result = a.values[0][0] * a.values[1][1] 
+            - a.values[0][1] * a.values[1][0];
     }
     else
     {
@@ -612,7 +631,7 @@ double Matrix<R,C>::get(int i) const
 {
     if(R != 1 && C != 1)
         throw std::length_error("get(int): length error, Not a vector");
-    if((R == 1 && C-1 < i) || (C == 1 && R-1 < i) || 0 < i)
+    if((R == 1 && C-1 < i) || (C == 1 && R-1 < i) || 0 > i)
         throw std::out_of_range("get(int): out of range");
 
     return (R == 1) ? this->values[0][i] : this->values[i][0];
@@ -637,7 +656,7 @@ Matrix<R,1> Matrix<R,C>::getColumn(int c) const
     Matrix<R, 1> retMatrix;
     for(int r = 0; r < R; ++r)
     {
-        retMatrix(r,0) = this->values[r][0];
+        retMatrix(r,0) = this->values[r][c];
     }
     return retMatrix;
 }
@@ -704,12 +723,13 @@ double matrix_minor(const Matrix<RC,RC>& a, int i, int j)
      return det(submatrix(a, i, j));
 }
 
+/*
 template <>
 double matrix_minor<2>(const Matrix<2,2>& a, int i, int j)
 {
     return det<2,2>(submatrix<2,2>(a, i, j));
 }
-
+*/
  /**
   * Access an element of this R x C Matrix using the function-call operator.
   *
@@ -733,7 +753,7 @@ template <int R, int C>
 double& Matrix<R,C>::operator()(int r, int c)
 {
     if(R-1 < r || C-1 < c || 0 > r || 0 > c)
-        throw std::out_of_range("operator(): out of range");
+        throw std::out_of_range("operator(int,int): out of range");
 
     return this->values[r][c];
 }
@@ -752,9 +772,9 @@ template <int R, int C>
 double& Matrix<R,C>::operator()(int i)
 {
     if(R != 1 && C != 1)
-        throw std::length_error("operator(): length error");
+        throw std::length_error("operator(int): length error");
     if((R == 1 && C-1 < i) || (C == 1 && R-1 < i) || 0 > i)
-        throw std::out_of_range("operator(): out of range");
+        throw std::out_of_range("operator(int): out of range");
 
     return R == 1 ? this->values[0][i] : this->values[i][0];
 }

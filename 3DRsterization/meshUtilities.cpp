@@ -30,6 +30,8 @@
  */
 Matrix<4,2> findBounds(list<Triangle*> triangles)
 {
+   Matrix<4,2> ret;
+   return ret;
 }
 
 
@@ -122,7 +124,7 @@ void scaleAndTranslate(list<Triangle*> triangles,
    // Setup the transformation matrix
    //   Translate first (since the translation was calculated in the
    //   original units) and then scale
-   m = scale * translate;
+   // m = scale * translate;
    
 
 

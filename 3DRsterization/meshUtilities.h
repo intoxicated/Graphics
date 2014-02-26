@@ -1,5 +1,5 @@
-#ifndef __meshUtilities_h__
-#define __meshUtilities_h__
+#ifndef __meshUtilities_H__
+#define __meshUtilities_H__
 
 #include "../2D_Rasterization/Color.h"
 #include "../2D_Rasterization/Geometry.hpp"
@@ -7,6 +7,7 @@
 #include "../Matrix/Matrix.hpp"
 #include <stdio.h>
 #include "Triangle.h"
+
 /**
  * Functions for working with triangular meshes.
  *
@@ -45,6 +46,7 @@ Matrix<4,2> findBounds(list<Triangle*> triangles);
  * @param fileName   The name of the file to read from
  * @param triangles  The "triangular mesh" to populat
  */
+
 void read(const char* fileName, list<Triangle*>& triangles);
 
 /**
