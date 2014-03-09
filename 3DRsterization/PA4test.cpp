@@ -1,5 +1,5 @@
-#include "../2D_Rasterization/FrameBuffer.h"
-#include "../2D_Rasterization/GraphicsWindow.h"
+#include "../2DRasterization/FrameBuffer.h"
+#include "../2DRasterization/GraphicsWindow.h"
 #include <list>
 #include "Triangle.h"
 
@@ -12,7 +12,7 @@ Color             GRAY  = {102,102,102};
 Color             WHITE = {255,255,255};
 Color             YELLOW = {255,255,0};   
 int               view;
-list<Triangle*>   triangles;
+list<Triangle *>  triangles;
 Rasterizer3D*     rasterizer;   
 
 int main(int argc, char* argv[])
@@ -32,17 +32,30 @@ int main(int argc, char* argv[])
    //frameBuffer->setKeyboardHandler(keyboardHandler);
    rasterizer = new Rasterizer3D(frameBuffer);
 
-
    // Read and scale the triangular mesh
    // (In an IDE you may need to hard-code the path to the file)
-   if (argc == 1) read("teapot.txt", triangles);
-   else           read(argv[1],      triangles);
-
+   if (argc == 1) 
+       read("teapot.txt", triangles);
+   else           
+       read(argv[1],      triangles);
+  
+   view = atoi(argv[2]);
+   
+   if(triangles.size() == 0)
+   {
+        printf("did not read file properly\n");
+        exit(1);
+   }
+   
    scaleAndTranslate(triangles, width, height, depth);
 
-
    // Setup the rasterizer
-   rasterizer->useTrimetricView(-view*(PI/4.0),0.0);
+   //rasterizer->useIsometricView();
+   //rasterizer->useTrimetricView(-view*(PI/4.0),0.0);
+   //rasterizer->useDimetricView(-view*(PI/4.0));
+   //rasterizer->useTwoPointPerspectiveView
+   //    (0, 100, 100, 0.0);
+   rasterizer->useThreePointPerspectiveView(50,20,100,-50, -view*(PI/4.0), 0.0);
    rasterizer->clear(GRAY);   
 
    // Draw the triangles

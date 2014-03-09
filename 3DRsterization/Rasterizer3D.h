@@ -1,16 +1,23 @@
+/**
+ * Rasterizer 3D header
+ * 
+ * Wooyoung Chung
+ *
+ * 3/4/14
+ */
+
 #ifndef __Rasterizer3D_H__
 #define __Rasterizer3D_H__
 
-#include "../2D_Rasterization/Color.h"
-#include "../2D_Rasterization/Geometry.hpp"
+#include "../2DRasterization/Color.h"
+#include "../2DRasterization/Geometry.hpp"
 #include <list>
 #include "../Matrix/Matrix.hpp"
-#include "../2D_Rasterization/Rasterizer2D.h"
+#include "../2DRasterization/Rasterizer2D.h"
 #include "Triangle.h"
 #define TOLERANCE  0.0001
 
 using namespace std;
-
 
 
 /**
@@ -20,7 +27,23 @@ class Rasterizer3D
 {
  private:
    // Add as needed
+    Rasterizer2D * rast;
+    double theta, phi;
 
+    Matrix<4,4> view;
+
+    int viewOption;
+
+    static const int THREE_PERSPECTIVE = 4;
+    static const int TWO_PERSPECTIVE = 3;
+    static const int TRIVIEW = 2;
+    static const int DIVIEW = 1;
+    static const int ISOVIEW = 0;
+    
+    void setProjections(double phi, double theta);
+
+    Matrix<4,1> applyTransform(const Matrix<4,1>& v, 
+                               const Matrix<4,4>& tran);
     
  public:
     /**

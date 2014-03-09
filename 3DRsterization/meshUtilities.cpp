@@ -1,3 +1,12 @@
+/**
+ * meshUtilities Implementation
+ *
+ * Wooyoung Chung
+ *
+ * 3/5/14
+ *
+ */
+
 #include "meshUtilities.h"
 
 /**
@@ -31,6 +40,25 @@
 Matrix<4,2> findBounds(list<Triangle*> triangles)
 {
    Matrix<4,2> ret;
+
+   std::list<Triangle *>::iterator it;
+   
+   Matrix<4,3> each;
+   Matrix<4,2> eachResult;
+   ret = getBounds((*triangles.begin())->vertices);
+ 
+   for(it = triangles.begin(); it != triangles.end(); ++it)
+   {
+        eachResult = getBounds((*it)->vertices);
+        for(int i = 0; i < 4; ++i)
+        {
+            if(ret(i,0) > eachResult(i,0))
+                ret(i,0) = eachResult(i,0);
+            if(ret(i,1) < eachResult(i,1))
+                ret(i,1) = eachResult(i,1);
+        }
+   }
+
    return ret;
 }
 
@@ -52,12 +80,15 @@ void read(const char* fileName, list<Triangle*>& triangles)
    Triangle*           t;
    Matrix<4,3>         v, n;
 
-
    in = fopen(fileName, "r");
-   
+   if(in == NULL)
+   {
+        printf("did not open file [%s] properly\n", fileName);
+        exit(1);
+   }
    // Read the number of triangles
    fscanf(in, "%d", &size);
-   
+  
    // Read the triangles
    for (int k=0; k<size; k++)
    {
@@ -93,7 +124,6 @@ void read(const char* fileName, list<Triangle*>& triangles)
       
       triangles.push_back(t);
    }
-
    fclose(in);
 }
 
@@ -113,20 +143,45 @@ void scaleAndTranslate(list<Triangle*> triangles,
                        double width, double height, double depth)
 {
    // Find the bounds
+   Matrix<4,2> bound = findBounds(triangles); 
+   double x = (bound(0,1) - bound(0,0));
+   double y = (bound(1,1) - bound(1,0));
+   double z = (bound(2,1) - bound(2,0));
+   
+   // find longest distance to fit    
+   double longest = x, cscale = width/x;
+   if(longest < y)
+       longest = y, cscale = height/y;
+   if(longest < z)
+       cscale = depth/z;
 
-
+   Matrix<4,4> scale, translate, m;
    // Setup the scaling matrix
-   
-
+   scale = {cscale,     0,    0,0,
+                0, cscale,    0,0,
+                0,     0, cscale,0,
+                0,     0,    0,1};
    // Setup the translation matrix to center the object
-
-   
+   // find center of mass
+   double xsum, ysum, zsum;
+   xsum = (bound(0,1) + bound(0,0)) * 4;
+   ysum = (bound(1,1) + bound(1,0)) * 4;
+   zsum = (bound(2,1) + bound(2,0)) * 4;
+   translate = {1, 0, 0, -xsum/8.0,
+                0, 1, 0, -ysum/8.0,
+                0, 0, 1, -zsum/8.0,
+                0, 0, 0, 1};
    // Setup the transformation matrix
    //   Translate first (since the translation was calculated in the
    //   original units) and then scale
-   // m = scale * translate;
-   
-
+   m = scale * translate;
+   std::list<Triangle*>::iterator it;
 
    // Transform
+   Matrix<4,3> each;
+   for(it = triangles.begin(); it != triangles.end(); ++it)
+   {
+        each = (*it)->vertices;
+        (*it)->vertices = m * each;
+   }
 }

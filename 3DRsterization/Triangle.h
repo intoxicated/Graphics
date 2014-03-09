@@ -1,7 +1,7 @@
 #ifndef __Triangle_h__
 #define __Triangle_h__
 
-#include "../2D_Rasterization/Color.h"
+#include "../2DRasterization/Color.h"
 #include "../Matrix/Matrix.hpp"
 
 /**

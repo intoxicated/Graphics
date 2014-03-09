@@ -1,8 +1,17 @@
+/**
+ * meshUtilities Header
+ *
+ * Wooyoung Chung
+ *
+ * 3/5/14
+ *
+ */
+
 #ifndef __meshUtilities_H__
 #define __meshUtilities_H__
 
-#include "../2D_Rasterization/Color.h"
-#include "../2D_Rasterization/Geometry.hpp"
+#include "../2DRasterization/Color.h"
+#include "../2DRasterization/Geometry.hpp"
 #include <list>
 #include "../Matrix/Matrix.hpp"
 #include <stdio.h>
